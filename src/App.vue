@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from './stores/auth';
+import { APP_FOOTNOTE } from './utils/footer';
 
 const auth = useAuthStore();
 const route = useRoute();
@@ -18,7 +19,7 @@ function logout() {
 <template>
   <div class="layout">
     <header class="topbar">
-      <div class="brand">StyleSavvy</div>
+      <div class="brand">StyleSavvy (a project by CST8414 group 2)</div>
       <nav v-if="!isAuthPage" class="nav-links">
         <RouterLink to="/wardrobe">Wardrobe</RouterLink>
         <RouterLink to="/quiz">Quiz</RouterLink>
@@ -34,5 +35,9 @@ function logout() {
     <main class="container">
       <RouterView />
     </main>
+
+    <footer class="global-footnote">
+      {{ APP_FOOTNOTE }}
+    </footer>
   </div>
 </template>
