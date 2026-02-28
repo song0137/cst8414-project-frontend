@@ -18,6 +18,13 @@ export type RecommendationItem = {
   productUrl: string | null;
 };
 
+export type FeedbackResult = {
+  message: string;
+  addedToWardrobe: boolean;
+  reason?: string;
+  wardrobeItemId?: number;
+};
+
 export const useRecommendationsStore = defineStore('recommendations', {
   state: () => ({
     runId: null as number | null,
@@ -41,8 +48,9 @@ export const useRecommendationsStore = defineStore('recommendations', {
         this.loading = false;
       }
     },
-    async feedback(id: number, feedbackType: 'like' | 'dislike') {
-      await api.post(`/recommendations/${id}/feedback`, { feedbackType });
+    async feedback(id: number, feedbackType: 'like' | 'dislike'): Promise<FeedbackResult> {
+      const { data } = await api.post(`/recommendations/${id}/feedback`, { feedbackType });
+      return data;
     },
   },
 });

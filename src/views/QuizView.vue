@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from 'vue';
 import { api } from '../services/api';
-import { getQuizProgress } from '../utils/quiz';
+import { applySavedQuizAnswers, getQuizProgress } from '../utils/quiz';
 
 type Question = {
   id: number;
   questionText: string;
   dimension: string;
+  selectedAnswerId?: number | null;
   answers: { id: number; answerText: string }[];
 };
 
@@ -21,6 +22,10 @@ onMounted(async () => {
   try {
     const { data } = await api.get('/quiz/questions');
     questions.value = data;
+    const restored = applySavedQuizAnswers(data);
+    for (const [questionId, answerId] of Object.entries(restored)) {
+      answers[Number(questionId)] = answerId;
+    }
   } catch (err: any) {
     error.value = err?.response?.data?.message || 'Failed to load quiz questions';
   }

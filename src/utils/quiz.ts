@@ -5,6 +5,11 @@ export type QuizProgress = {
   missingQuestionIds: number[];
 };
 
+export type SavedQuizQuestion = {
+  id: number;
+  selectedAnswerId?: number | null;
+};
+
 export function getQuizProgress(
   questionIds: number[],
   answers: Record<number, number | undefined>,
@@ -27,4 +32,14 @@ export function getQuizProgress(
     isComplete: uniqueQuestionIds.length > 0 && missingQuestionIds.length === 0,
     missingQuestionIds,
   };
+}
+
+export function applySavedQuizAnswers(questions: SavedQuizQuestion[]): Record<number, number> {
+  const mapped: Record<number, number> = {};
+  for (const question of questions) {
+    if (typeof question.selectedAnswerId === 'number' && Number.isFinite(question.selectedAnswerId)) {
+      mapped[question.id] = question.selectedAnswerId;
+    }
+  }
+  return mapped;
 }

@@ -1,11 +1,26 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { useRecommendationsStore } from '../stores/recommendations';
 import { describeProfile } from '../utils/recommendations';
 
 const recommendations = useRecommendationsStore();
+const actionMessage = ref('');
 
 async function giveFeedback(id: number, type: 'like' | 'dislike') {
-  await recommendations.feedback(id, type);
+  actionMessage.value = '';
+  const result = await recommendations.feedback(id, type);
+
+  if (type === 'like' && result.addedToWardrobe) {
+    actionMessage.value = 'Liked item added to your wardrobe.';
+    return;
+  }
+
+  if (type === 'like' && !result.addedToWardrobe && result.reason) {
+    actionMessage.value = result.reason;
+    return;
+  }
+
+  actionMessage.value = result.message;
 }
 </script>
 
@@ -19,6 +34,7 @@ async function giveFeedback(id: number, type: 'like' | 'dislike') {
 
     <p v-if="recommendations.error" class="error">{{ recommendations.error }}</p>
     <p class="muted">{{ describeProfile(recommendations.profile) }}</p>
+    <p v-if="actionMessage">{{ actionMessage }}</p>
 
     <ul class="list">
       <li v-for="item in recommendations.items" :key="item.id">
