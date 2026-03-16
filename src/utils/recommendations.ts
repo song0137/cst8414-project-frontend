@@ -35,3 +35,11 @@ export function describeProfile(profile: RecommendationProfile | null | undefine
 
   return parts.join(' | ');
 }
+
+export function describeReviewSummary(averageRating: number | null, reviewCount: number | null): string {
+  if (!averageRating || !reviewCount) {
+    return 'No reviews yet';
+  }
+
+  return `${averageRating.toFixed(1)}/5 from ${reviewCount} review${reviewCount === 1 ? '' : 's'}`;
+}

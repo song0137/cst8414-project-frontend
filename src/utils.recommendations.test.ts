@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { describeProfile } from './utils/recommendations';
+import { describeProfile, describeReviewSummary } from './utils/recommendations';
 
 describe('describeProfile', () => {
   it('returns key dimensions in readable order', () => {
@@ -18,5 +18,13 @@ describe('describeProfile', () => {
 
   it('falls back when profile is empty', () => {
     expect(describeProfile({})).toBe('No quiz profile saved yet. Complete the quiz first.');
+  });
+
+  it('formats review summaries for rated products', () => {
+    expect(describeReviewSummary(4.3, 12)).toBe('4.3/5 from 12 reviews');
+  });
+
+  it('handles products with no reviews yet', () => {
+    expect(describeReviewSummary(null, 0)).toBe('No reviews yet');
   });
 });
