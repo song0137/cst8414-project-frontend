@@ -115,6 +115,13 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
 .error { color: #b91c1c; }
 .muted { color: #475569; }
 
+.shopping-toolbar {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  align-items: end;
+}
+
 .shopping-grid {
   display: grid;
   gap: 1rem;
@@ -189,8 +196,41 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
   border-top: 1px solid #e2e8f0;
 }
 
+.selection-panel {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.checkbox-row input {
+  width: 16px;
+  height: 16px;
+}
+
+.share-preview {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.9rem;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #eff6ff, #f8fafc);
+  border: 1px solid #dbeafe;
+}
+
+.compact-list {
+  margin-top: 0.25rem;
+}
+
 @media (max-width: 900px) {
   .two-col { grid-template-columns: 1fr; }
   .topbar { align-items: flex-start; flex-direction: column; }
   .shopping-heading { flex-direction: column; }
+  .shopping-toolbar { align-items: stretch; }
 }

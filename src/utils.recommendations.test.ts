@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { describeProfile, describeReviewSummary } from './utils/recommendations';
+import { describeProfile, describeReviewSummary, describeShoppingMode } from './utils/recommendations';
 
 describe('describeProfile', () => {
   it('returns key dimensions in readable order', () => {
@@ -26,5 +26,9 @@ describe('describeProfile', () => {
 
   it('handles products with no reviews yet', () => {
     expect(describeReviewSummary(null, 0)).toBe('No reviews yet');
+  });
+
+  it('formats shopping sort modes for the UI', () => {
+    expect(describeShoppingMode('top-rated')).toBe('Top rated');
   });
 });

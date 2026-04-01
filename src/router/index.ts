@@ -7,6 +7,7 @@ import ShoppingView from '../views/ShoppingView.vue';
 import ReviewsView from '../views/ReviewsView.vue';
 import BlogView from '../views/BlogView.vue';
 import ProfileView from '../views/ProfileView.vue';
+import SocialView from '../views/SocialView.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -19,6 +20,7 @@ const router = createRouter({
     { path: '/shopping', name: 'shopping', component: ShoppingView },
     { path: '/reviews', name: 'reviews', component: ReviewsView },
     { path: '/blog', name: 'blog', component: BlogView },
+    { path: '/social', name: 'social', component: SocialView },
     { path: '/profile', name: 'profile', component: ProfileView },
   ],
 });

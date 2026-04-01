@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue';
 import { api } from '../services/api';
-import { describeReviewSummary } from '../utils/recommendations';
+import { describeReviewSummary, describeShoppingMode, type ShoppingSortMode } from '../utils/recommendations';
 
 type ShoppingSuggestion = {
   id: number;
@@ -28,6 +28,13 @@ const loading = ref(false);
 const error = ref('');
 const actionMessage = ref('');
 const draftReviews = reactive<Record<number, ReviewDraft>>({});
+const controls = reactive<{
+  sort: ShoppingSortMode;
+  minRating: 'all' | '4' | '4.5';
+}>({
+  sort: 'personalized',
+  minRating: 'all',
+});
 
 function ensureDraft(productId: number): ReviewDraft {
   if (!draftReviews[productId]) {
@@ -46,7 +53,12 @@ async function loadProducts() {
   error.value = '';
 
   try {
-    const { data } = await api.get('/products/suggestions');
+    const params: Record<string, string> = { sort: controls.sort };
+    if (controls.minRating !== 'all') {
+      params.minRating = controls.minRating;
+    }
+
+    const { data } = await api.get('/products/suggestions', { params });
     products.value = data;
     for (const product of products.value) {
       ensureDraft(product.id);
@@ -84,10 +96,30 @@ onMounted(loadProducts);
     <article class="card">
       <h2>Shopping Suggestions</h2>
       <p>These products are ranked from your quiz profile, recommendation feedback, price fit, and review signals.</p>
-      <div class="inline-actions">
-        <button @click="loadProducts" :disabled="loading">
+      <form class="shopping-toolbar" @submit.prevent="loadProducts">
+        <label>
+          Sort
+          <select v-model="controls.sort">
+            <option value="personalized">Best match</option>
+            <option value="top-rated">Top rated</option>
+            <option value="price-low">Price: low to high</option>
+            <option value="price-high">Price: high to low</option>
+          </select>
+        </label>
+        <label>
+          Minimum rating
+          <select v-model="controls.minRating">
+            <option value="all">All ratings</option>
+            <option value="4">4.0+</option>
+            <option value="4.5">4.5+</option>
+          </select>
+        </label>
+        <button type="submit" :disabled="loading">
           {{ loading ? 'Refreshing...' : 'Refresh Suggestions' }}
         </button>
+      </form>
+      <p class="muted">Viewing: {{ describeShoppingMode(controls.sort) }}</p>
+      <div class="inline-actions">
         <span v-if="actionMessage">{{ actionMessage }}</span>
       </div>
       <p v-if="error" class="error">{{ error }}</p>
