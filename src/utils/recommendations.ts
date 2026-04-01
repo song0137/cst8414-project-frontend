@@ -5,6 +5,8 @@ export type RecommendationProfile = Partial<{
   budget: string;
 }>;
 
+export type ShoppingSortMode = 'personalized' | 'top-rated' | 'price-low' | 'price-high';
+
 const orderedKeys: Array<keyof RecommendationProfile> = ['style', 'color', 'fit', 'budget'];
 
 function prettyLabel(key: keyof RecommendationProfile): string {
@@ -42,4 +44,18 @@ export function describeReviewSummary(averageRating: number | null, reviewCount:
   }
 
   return `${averageRating.toFixed(1)}/5 from ${reviewCount} review${reviewCount === 1 ? '' : 's'}`;
+}
+
+export function describeShoppingMode(mode: ShoppingSortMode): string {
+  switch (mode) {
+    case 'top-rated':
+      return 'Top rated';
+    case 'price-low':
+      return 'Price: low to high';
+    case 'price-high':
+      return 'Price: high to low';
+    case 'personalized':
+    default:
+      return 'Best match';
+  }
 }

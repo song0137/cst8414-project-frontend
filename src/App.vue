@@ -27,6 +27,7 @@ function logout() {
         <RouterLink to="/shopping">Shopping</RouterLink>
         <RouterLink to="/reviews">Reviews</RouterLink>
         <RouterLink to="/blog">Blog</RouterLink>
+        <RouterLink to="/social">Social</RouterLink>
         <RouterLink to="/profile">Profile</RouterLink>
         <button @click="logout">Logout</button>
       </nav>
